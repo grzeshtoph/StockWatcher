@@ -2,6 +2,8 @@ package com.google.gwt.sample.stockwatcher.client;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: gregs
@@ -10,5 +12,9 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  * To change this template use File | Settings | File Templates.
  */
 public interface StockPriceServiceAsync {
-    void getPrices(String[] symbols, AsyncCallback<StockPrice[]> async);
+    void getUpdatedStockPrices(AsyncCallback<List<StockPrice>> async);
+
+    void addSymbol(String symbol, AsyncCallback<StockPrice> async);
+
+    void removeSymbol(String symbol, AsyncCallback<StockPrice> async);
 }

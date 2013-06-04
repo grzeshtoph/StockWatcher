@@ -1,13 +1,21 @@
 package com.google.gwt.sample.stockwatcher.server;
 
-import com.google.gwt.sample.stockwatcher.client.DelistedException;
+import com.google.gwt.sample.stockwatcher.client.exceptions.ApplicationException;
+import com.google.gwt.sample.stockwatcher.client.exceptions.DelistedException;
 import com.google.gwt.sample.stockwatcher.client.StockPrice;
+import com.google.gwt.sample.stockwatcher.client.exceptions.DuplicatedSymbolException;
+import com.google.gwt.sample.stockwatcher.client.exceptions.NotFoundSymbolException;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.google.gwt.sample.stockwatcher.client.StockPriceService;
 
+import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
@@ -31,23 +39,72 @@ public class StockPriceServiceImpl extends RemoteServiceServlet implements Stock
         delistedSymbols.add("BAL");
     }
 
-    public StockPrice[] getPrices(String[] symbols) throws DelistedException {
-        StockPrice[] prices = new StockPrice[symbols.length];
+    @Override
+    public List<StockPrice> getUpdatedStockPrices() {
+        List<StockPrice> prices = getPricesFromStorage();
         Random random = new Random();
 
-        for (int i = 0; i < symbols.length; i++) {
-            if (delistedSymbols.contains(symbols[i])) {
-                throw new DelistedException(symbols[i]);
-            }
-
-            BigDecimal randomNum = new BigDecimal(random.nextDouble()).setScale(4, DEFAULT_ROUNDING);
-            BigDecimal price = MAX_PRICE.multiply(randomNum).setScale(2, DEFAULT_ROUNDING);
-            randomNum = new BigDecimal(random.nextDouble() * 2.0 - 1.0).setScale(4, DEFAULT_ROUNDING);
-            BigDecimal change = price.multiply(MAX_PRICE_CHANGE).multiply(randomNum).setScale(2, DEFAULT_ROUNDING);
-
-            prices[i] = new StockPrice(symbols[i], price, change);
+        int index = 0;
+        for (StockPrice price : prices) {
+            updateStockPrice(price, index++, random);
         }
 
+        return prices;
+    }
+
+    @Override
+    public StockPrice addSymbol(String symbol) throws ApplicationException {
+        if (delistedSymbols.contains(symbol)) {
+            throw new DelistedException(symbol);
+        }
+
+        List<StockPrice> prices = getPricesFromStorage();
+        for (StockPrice price : prices) {
+            if (price.getSymbol().equals(symbol)) {
+                throw new DuplicatedSymbolException(symbol);
+            }
+        }
+
+        StockPrice stockPrice = updateStockPrice(new StockPrice(symbol), prices.size(), new Random());
+        prices.add(stockPrice);
+
+        return stockPrice;
+    }
+
+    @Override
+    public StockPrice removeSymbol(String symbol) throws NotFoundSymbolException {
+        List<StockPrice> prices = getPricesFromStorage();
+        StockPrice priceToRemove = new StockPrice(symbol);
+        if (prices.contains(priceToRemove)) {
+            int index = prices.indexOf(priceToRemove);
+            prices.remove(index);
+            priceToRemove.setIndex(index);
+            return priceToRemove;
+        }
+
+        throw new NotFoundSymbolException(symbol);
+    }
+
+    private StockPrice updateStockPrice(StockPrice stockPrice, int index, Random random) {
+        BigDecimal randomNum = new BigDecimal(random.nextDouble()).setScale(4, DEFAULT_ROUNDING);
+        BigDecimal price = MAX_PRICE.multiply(randomNum).setScale(2, DEFAULT_ROUNDING);
+        randomNum = new BigDecimal(random.nextDouble() * 2.0 - 1.0).setScale(4, DEFAULT_ROUNDING);
+        BigDecimal change = price.multiply(MAX_PRICE_CHANGE).multiply(randomNum).setScale(2, DEFAULT_ROUNDING);
+
+        stockPrice.setIndex(index);
+        stockPrice.setChange(change);
+        stockPrice.setPrice(price);
+
+        return stockPrice;
+    }
+
+    private List<StockPrice> getPricesFromStorage() {
+        HttpSession session = this.getThreadLocalRequest().getSession(true);
+        List<StockPrice> prices = (List<StockPrice>) session.getAttribute("prices");
+        if (prices == null) {
+            prices = new ArrayList<StockPrice>();
+            session.setAttribute("prices", prices);
+        }
         return prices;
     }
 }

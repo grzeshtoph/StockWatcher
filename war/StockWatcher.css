@@ -56,3 +56,7 @@ body {
 .errorMessage {
     color: red;
 }
+
+.infoMessage {
+    color: blue;
+}

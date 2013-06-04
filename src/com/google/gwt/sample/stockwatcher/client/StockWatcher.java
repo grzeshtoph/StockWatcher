@@ -8,6 +8,9 @@ import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
+import com.google.gwt.sample.stockwatcher.client.exceptions.DelistedException;
+import com.google.gwt.sample.stockwatcher.client.exceptions.DuplicatedSymbolException;
+import com.google.gwt.sample.stockwatcher.client.exceptions.NotFoundSymbolException;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -19,7 +22,6 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -32,7 +34,7 @@ public class StockWatcher implements EntryPoint {
     private Button addStockButton = new Button("Add");
     private Label lastUpdatedLabel = new Label();
     private Label errorMessageLabel = new Label();
-    private List<String> stocks = new ArrayList<String>();
+    private Label infoMessageLabel = new Label();
     private StockPriceServiceAsync stockPriceService = StockPriceService.App.getInstance();
 
     /**
@@ -42,6 +44,10 @@ public class StockWatcher implements EntryPoint {
         // Create error message placeholder
         errorMessageLabel.setStyleName("errorMessage");
         errorMessageLabel.setVisible(false);
+
+        // Create info message placeholder
+        infoMessageLabel.setStyleName("infoMessage");
+        infoMessageLabel.setVisible(false);
 
         // Create table for stock data.
         stocksFlexTable.setText(0, 0, "Symbol");
@@ -63,6 +69,7 @@ public class StockWatcher implements EntryPoint {
         addPanel.addStyleName("addPanel");
 
         // Assemble Main panel.
+        mainPanel.add(infoMessageLabel);
         mainPanel.add(errorMessageLabel);
         mainPanel.add(stocksFlexTable);
         mainPanel.add(addPanel);
@@ -102,23 +109,8 @@ public class StockWatcher implements EntryPoint {
         });
     }
 
-    private void updateTable(StockPrice[] prices) {
-        for (StockPrice price : prices) {
-            updateTable(price);
-        }
-
-        // Display timestamp showing last refresh.
-        lastUpdatedLabel.setText("Last update : "
-                + DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_TIME_MEDIUM).format(new Date()));
-    }
-
     private void updateTable(StockPrice price) {
-        // Make sure the stock is still in the stock table.
-        if (!stocks.contains(price.getSymbol())) {
-            return;
-        }
-
-        int row = stocks.indexOf(price.getSymbol()) + 1;
+        int row = price.getIndex() + 1;
 
         // Format the data in the Price and Change fields.
         String priceText = NumberFormat.getFormat("#,##0.00").format(price.getPrice());
@@ -126,7 +118,7 @@ public class StockWatcher implements EntryPoint {
         String changeText = changeFormat.format(price.getChange());
         String changePercentText = changeFormat.format(price.getChangePercent());
 
-        // Populate the Price and Change fields with new data.
+        // Populate the fields with new data
         stocksFlexTable.setText(row, 1, priceText);
         Label changeWidget = (Label) stocksFlexTable.getWidget(row, 2);
         changeWidget.setText(changeText + " (" + changePercentText + "%)");
@@ -152,67 +144,114 @@ public class StockWatcher implements EntryPoint {
             return;
         }
 
-        newSymbolTextBox.setText("");
-
-        // Don't add the stock if it's already in the table.
-        if (stocks.contains(symbol)) {
-            return;
-        }
-
-        // Add the stock to the table.
-        int row = stocksFlexTable.getRowCount();
-        stocks.add(symbol);
-        stocksFlexTable.setText(row, 0, symbol);
-        stocksFlexTable.setWidget(row, 2, new Label());
-        stocksFlexTable.getCellFormatter().addStyleName(row, 1, "watchListNumericColumn");
-        stocksFlexTable.getCellFormatter().addStyleName(row, 2, "watchListNumericColumn");
-        stocksFlexTable.getCellFormatter().addStyleName(row, 3, "watchListRemoveColumn");
-
-        // Add a button to remove this stock from the table.
-        Button removeButton = new Button("x");
-        removeButton.addStyleDependentName("remove");
-        removeButton.addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                int removedIndex = stocks.indexOf(symbol);
-                stocks.remove(removedIndex);
-                stocksFlexTable.removeRow(removedIndex + 1);
-            }
-        });
-        stocksFlexTable.setWidget(row, 3, removeButton);
-
-
-        // Get the stock price.
-        refreshWatchList();
+        stockPriceService.addSymbol(symbol, new AddStockAsyncCallback());
     }
 
     private void refreshWatchList() {
-        if (stockPriceService == null) {
-            stockPriceService = StockPriceService.App.getInstance();
+        stockPriceService.getUpdatedStockPrices(new UpdateStockAsyncCall());
+    }
+
+    private class AddStockAsyncCallback implements AsyncCallback<StockPrice> {
+        @Override
+        public void onFailure(Throwable caught) {
+            String errorMessage;
+
+            if (caught instanceof DelistedException) {
+                errorMessage = ((DelistedException) caught).getSymbol()
+                        + " has been delisted and shouldn't be used anymore.";
+            } else if (caught instanceof DuplicatedSymbolException) {
+                errorMessage = ((DuplicatedSymbolException) caught).getSymbol()
+                        + " is already on the list. Cannot be added more, than once.";
+            } else {
+                errorMessage = caught.getMessage();
+            }
+
+            errorMessageLabel.setText(errorMessage);
+            errorMessageLabel.setVisible(true);
+            infoMessageLabel.setText("");
+            infoMessageLabel.setVisible(false);
         }
 
-        AsyncCallback<StockPrice[]> callback = new AsyncCallback<StockPrice[]>() {
-            @Override
-            public void onFailure(Throwable caught) {
-                String errorMessage;
-                if (caught instanceof DelistedException) {
-                    errorMessage = ((DelistedException) caught).getSymbol() + " has been delisted. Cannot be used anymore.";
-                } else {
-                    errorMessage = caught.getMessage();
+        @Override
+        public void onSuccess(final StockPrice stockPrice) {
+            newSymbolTextBox.setText("");
+
+            // Add the stock to the table.
+            int row = stockPrice.getIndex() + 1;
+            stocksFlexTable.setText(row, 0, stockPrice.getSymbol());
+            stocksFlexTable.setWidget(row, 2, new Label());
+            stocksFlexTable.getCellFormatter().addStyleName(row, 1, "watchListNumericColumn");
+            stocksFlexTable.getCellFormatter().addStyleName(row, 2, "watchListNumericColumn");
+            stocksFlexTable.getCellFormatter().addStyleName(row, 3, "watchListRemoveColumn");
+
+            // Add a button to remove this stock from the table.
+            Button removeButton = new Button("x");
+            removeButton.addStyleDependentName("remove");
+            removeButton.setTitle("Remove " + stockPrice.getSymbol());
+            removeButton.addClickHandler(new ClickHandler() {
+                @Override
+                public void onClick(ClickEvent event) {
+                    stockPriceService.removeSymbol(stockPrice.getSymbol(), new RemoveStockAsyncCallback());
                 }
+            });
+            stocksFlexTable.setWidget(row, 3, removeButton);
 
-                errorMessageLabel.setText("Error: " + errorMessage);
-                errorMessageLabel.setVisible(true);
+            updateTable(stockPrice);
+
+            errorMessageLabel.setText("");
+            errorMessageLabel.setVisible(false);
+            infoMessageLabel.setText("Currency " + stockPrice.getSymbol() + " added successfully.");
+            infoMessageLabel.setVisible(true);
+        }
+    }
+
+    private class RemoveStockAsyncCallback implements AsyncCallback<StockPrice> {
+
+        @Override
+        public void onFailure(Throwable caught) {
+            String errorMessage;
+            if (caught instanceof NotFoundSymbolException) {
+                errorMessage = ((NotFoundSymbolException) caught).getSymbol() + " not found. Cannot be deleted.";
+            } else {
+                errorMessage = caught.getMessage();
             }
 
-            @Override
-            public void onSuccess(StockPrice[] result) {
-                updateTable(result);
+            errorMessageLabel.setText(errorMessage);
+            errorMessageLabel.setVisible(true);
+            infoMessageLabel.setText("");
+            infoMessageLabel.setVisible(false);
+        }
 
-                errorMessageLabel.setVisible(false);
+        @Override
+        public void onSuccess(StockPrice result) {
+            stocksFlexTable.removeRow(result.getIndex() + 1);
+
+            errorMessageLabel.setText("");
+            errorMessageLabel.setVisible(false);
+            infoMessageLabel.setText("Currency removed successfully.");
+            infoMessageLabel.setVisible(true);
+        }
+    }
+
+    private class UpdateStockAsyncCall implements AsyncCallback<List<StockPrice>> {
+
+        @Override
+        public void onFailure(Throwable caught) {
+            errorMessageLabel.setText(caught.getMessage());
+            errorMessageLabel.setVisible(true);
+            infoMessageLabel.setText("");
+            infoMessageLabel.setVisible(false);
+        }
+
+        @Override
+        public void onSuccess(List<StockPrice> result) {
+            for (StockPrice price : result) {
+                updateTable(price);
             }
-        };
 
-        stockPriceService.getPrices(stocks.toArray(new String[stocks.size()]), callback);
+            // Display timestamp showing last refresh.
+            lastUpdatedLabel.setText("Last update : "
+                    + DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_TIME_MEDIUM).format(new Date()));
+        }
     }
 }
