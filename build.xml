@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <project name="StockWatcher" default="build" basedir=".">
-  <!-- Arguments to gwtc and devmode targets -->
-  <property name="gwt.args" value="" />
 
-  <!-- Configure path to GWT SDK -->
-  <property name="gwt.sdk" location="/home/gregs/dev/java/gwt-2.5.1" />
+  <property file="build.properties"/>
 
   <path id="project.class.path">
     <pathelement location="war/WEB-INF/classes"/>
@@ -39,8 +36,8 @@
       <classpath>
         <pathelement location="src"/>
         <path refid="project.class.path"/>
-        <pathelement location="/home/gregs/dev/java/gwt-2.5.1/validation-api-1.0.0.GA.jar" />
-        <pathelement location="/home/gregs/dev/java/gwt-2.5.1/validation-api-1.0.0.GA-sources.jar" />
+        <pathelement location="${gwt.sdk}/validation-api-1.0.0.GA.jar" />
+        <pathelement location="${gwt.sdk}/validation-api-1.0.0.GA-sources.jar" />
       </classpath>
       <!-- add jvmarg -Xss16M or similar if you see a StackOverflowError -->
       <jvmarg value="-Xmx256M"/>
@@ -57,8 +54,8 @@
       <classpath>
         <pathelement location="src"/>
         <path refid="project.class.path"/>
-        <pathelement location="/home/gregs/dev/java/gwt-2.5.1/validation-api-1.0.0.GA.jar" />
-        <pathelement location="/home/gregs/dev/java/gwt-2.5.1/validation-api-1.0.0.GA-sources.jar" />
+        <pathelement location="${gwt.sdk}/validation-api-1.0.0.GA.jar" />
+        <pathelement location="${gwt.sdk}/validation-api-1.0.0.GA-sources.jar" />
       </classpath>
       <jvmarg value="-Xmx256M"/>
       <arg value="-startupUrl"/>
@@ -76,7 +73,7 @@
       source="1.5" target="1.5" nowarn="true"
       destdir="war/WEB-INF/classes"
       debug="true" debuglevel="lines,vars,source">
-      <classpath location="/home/gregs/dev/lib/junit-4.11.jar"/>
+      <classpath location="${lib.dir}/junit-4.11.jar"/>
       <classpath refid="project.class.path"/>
     </javac>
   </target>
@@ -91,9 +88,9 @@
         <pathelement location="src" />
         <pathelement location="test" />
         <path refid="project.class.path" />
-        <pathelement location="/home/gregs/dev/java/gwt-2.5.1/validation-api-1.0.0.GA.jar" />
-        <pathelement location="/home/gregs/dev/java/gwt-2.5.1/validation-api-1.0.0.GA-sources.jar" />
-        <pathelement location="/home/gregs/dev/lib/junit-4.11.jar" />
+        <pathelement location="${gwt.sdk}/validation-api-1.0.0.GA.jar" />
+        <pathelement location="${gwt.sdk}/validation-api-1.0.0.GA-sources.jar" />
+        <pathelement location="${lib.dir}/junit-4.11.jar" />
       </classpath>
       <batchtest todir="reports/htmlunit.dev" >
         <fileset dir="test" >
@@ -115,9 +112,9 @@
         <pathelement location="src" />
         <pathelement location="test" />
         <path refid="project.class.path" />
-        <pathelement location="/home/gregs/dev/java/gwt-2.5.1/validation-api-1.0.0.GA.jar" />
-        <pathelement location="/home/gregs/dev/java/gwt-2.5.1/validation-api-1.0.0.GA-sources.jar" />
-        <pathelement location="/home/gregs/dev/lib/junit-4.11.jar" />
+        <pathelement location="${gwt.sdk}/validation-api-1.0.0.GA.jar" />
+        <pathelement location="${gwt.sdk}/validation-api-1.0.0.GA-sources.jar" />
+        <pathelement location="${lib.dir}/junit-4.11.jar" />
       </classpath>
       <batchtest todir="reports/htmlunit.prod" >
         <fileset dir="test" >

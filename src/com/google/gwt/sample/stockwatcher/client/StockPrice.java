@@ -1,4 +1,4 @@
-package com.google.gwt.sample.stockwatcher.model;
+package com.google.gwt.sample.stockwatcher.client;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

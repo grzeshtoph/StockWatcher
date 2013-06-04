@@ -1,6 +1,5 @@
 package com.google.gwt.sample.stockwatcher.client;
 
-import com.google.gwt.sample.stockwatcher.model.StockPrice;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.google.gwt.core.client.GWT;

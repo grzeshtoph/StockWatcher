@@ -1,6 +1,5 @@
 package com.google.gwt.sample.stockwatcher.client;
 
-import com.google.gwt.sample.stockwatcher.model.StockPrice;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**

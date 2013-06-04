@@ -1,7 +1,7 @@
 package com.google.gwt.sample.stockwatcher.server;
 
 import com.google.gwt.sample.stockwatcher.client.DelistedException;
-import com.google.gwt.sample.stockwatcher.model.StockPrice;
+import com.google.gwt.sample.stockwatcher.client.StockPrice;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.google.gwt.sample.stockwatcher.client.StockPriceService;
 
