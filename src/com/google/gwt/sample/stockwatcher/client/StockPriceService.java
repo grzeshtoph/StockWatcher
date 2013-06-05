@@ -23,7 +23,7 @@ public interface StockPriceService extends RemoteService {
      *
      * @return stocks with new prices
      */
-    List<StockPrice> getUpdatedStockPrices();
+    StockPrice[] getUpdatedStockPrices();
 
     /**
      * Adds a new symbol as a stock. Validates, if it already exists or is it on delisted list.

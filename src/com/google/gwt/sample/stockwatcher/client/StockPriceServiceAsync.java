@@ -12,7 +12,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public interface StockPriceServiceAsync {
-    void getUpdatedStockPrices(AsyncCallback<List<StockPrice>> async);
+    void getUpdatedStockPrices(AsyncCallback<StockPrice[]> async);
 
     void addSymbol(String symbol, AsyncCallback<StockPrice> async);
 

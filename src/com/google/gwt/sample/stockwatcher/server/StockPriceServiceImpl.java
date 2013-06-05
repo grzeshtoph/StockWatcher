@@ -40,7 +40,7 @@ public class StockPriceServiceImpl extends RemoteServiceServlet implements Stock
     }
 
     @Override
-    public List<StockPrice> getUpdatedStockPrices() {
+    public StockPrice[] getUpdatedStockPrices() {
         List<StockPrice> prices = getPricesFromStorage();
         Random random = new Random();
 
@@ -49,7 +49,7 @@ public class StockPriceServiceImpl extends RemoteServiceServlet implements Stock
             updateStockPrice(price, index++, random);
         }
 
-        return prices;
+        return prices.toArray(new StockPrice[prices.size()]);
     }
 
     @Override
