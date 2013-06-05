@@ -20,14 +20,10 @@ import java.util.Random;
 import java.util.Set;
 
 /**
- * Created with IntelliJ IDEA.
- * User: gregs
- * Date: 03.06.13
- * Time: 14:04
- * To change this template use File | Settings | File Templates.
+ * The sole implementation of {@link StockPriceService}.
  */
 public class StockPriceServiceImpl extends RemoteServiceServlet implements StockPriceService {
-    public static final RoundingMode DEFAULT_ROUNDING = RoundingMode.HALF_UP;
+    private static final RoundingMode DEFAULT_ROUNDING = RoundingMode.HALF_UP;
     private static final BigDecimal MAX_PRICE = new BigDecimal("100.00"); // $100.00
     private static final BigDecimal MAX_PRICE_CHANGE = new BigDecimal("0.02"); // +/- 2%
     private final Set<String> delistedSymbols = new HashSet<String>();

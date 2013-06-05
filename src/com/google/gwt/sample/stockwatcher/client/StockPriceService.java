@@ -10,11 +10,7 @@ import com.google.gwt.core.client.GWT;
 import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
- * User: gregs
- * Date: 03.06.13
- * Time: 14:04
- * To change this template use File | Settings | File Templates.
+ * The main interface for the stock price remote service.
  */
 @RemoteServiceRelativePath("StockPriceService")
 public interface StockPriceService extends RemoteService {

@@ -12,19 +12,19 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 /**
- * UI builder for {@StockWatcher} class to extract Widgets mamagement from StockWatcher class.
+ * UI builder for {@link StockWatcher} class to extract Widgets management from StockWatcher class.
  */
 public class StockWatcherWidgetsBuilder {
-    public static final NumberFormat PRICE_FORMAT = NumberFormat.getFormat("#,##0.00");
-    public static final NumberFormat PRICE_CHANGE_FORMAT = NumberFormat.getFormat("+#,##0.00;-#,##0.00");
-    private VerticalPanel mainPanel = new VerticalPanel();
-    private FlexTable stocksFlexTable = new FlexTable();
-    private HorizontalPanel addPanel = new HorizontalPanel();
-    private TextBox newSymbolTextBox = new TextBox();
-    private Button addStockButton = new Button("Add");
-    private Label lastUpdatedLabel = new Label();
-    private Label errorMessageLabel = new Label();
-    private Label infoMessageLabel = new Label();
+    private static final NumberFormat PRICE_FORMAT = NumberFormat.getFormat("#,##0.00");
+    private static final NumberFormat PRICE_CHANGE_FORMAT = NumberFormat.getFormat("+#,##0.00;-#,##0.00");
+    private final VerticalPanel mainPanel = new VerticalPanel();
+    private final FlexTable stocksFlexTable = new FlexTable();
+    private final HorizontalPanel addPanel = new HorizontalPanel();
+    private final TextBox newSymbolTextBox = new TextBox();
+    private final Button addStockButton = new Button("Add");
+    private final Label lastUpdatedLabel = new Label();
+    private final Label errorMessageLabel = new Label();
+    private final Label infoMessageLabel = new Label();
 
     public StockWatcherWidgetsBuilder setUpErrorMessageLabel() {
         // Create error message placeholder

@@ -5,16 +5,12 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
- * User: gregs
- * Date: 03.06.13
- * Time: 14:04
- * To change this template use File | Settings | File Templates.
+ * Asynchronous version of interface required by GWT services.
  */
 public interface StockPriceServiceAsync {
-    void getUpdatedStockPrices(AsyncCallback<StockPrice[]> async);
+    void getUpdatedStockPrices(AsyncCallback<StockPrice[]> callback);
 
-    void addSymbol(String symbol, AsyncCallback<StockPrice> async);
+    void addSymbol(String symbol, AsyncCallback<StockPrice> callback);
 
-    void removeSymbol(String symbol, AsyncCallback<StockPrice> async);
+    void removeSymbol(String symbol, AsyncCallback<StockPrice> callback);
 }

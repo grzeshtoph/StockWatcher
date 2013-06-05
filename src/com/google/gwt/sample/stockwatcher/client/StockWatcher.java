@@ -19,8 +19,8 @@ import java.util.Date;
 
 public class StockWatcher implements EntryPoint {
     private static final int REFRESH_INTERVAL = 5000;
-    private StockWatcherWidgetsBuilder widgetsBuilder = new StockWatcherWidgetsBuilder();
-    private StockPriceServiceAsync stockPriceService = StockPriceService.App.getInstance();
+    private final StockWatcherWidgetsBuilder widgetsBuilder = new StockWatcherWidgetsBuilder();
+    private final StockPriceServiceAsync stockPriceService = StockPriceService.App.getInstance();
 
     /**
      * Entry point method.
