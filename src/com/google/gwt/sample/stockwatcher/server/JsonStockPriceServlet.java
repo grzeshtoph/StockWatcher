@@ -1,5 +1,7 @@
 package com.google.gwt.sample.stockwatcher.server;
 
+import com.google.common.base.Splitter;
+import com.google.common.collect.Sets;
 import com.google.gwt.sample.stockwatcher.client.model.StockPrice;
 import com.google.gwt.sample.stockwatcher.server.utils.StockPriceUtils;
 
@@ -23,8 +25,8 @@ public class JsonStockPriceServlet extends HttpServlet {
         List<StockPrice> prices = StockPriceUtils.getPricesFromStorage(req.getSession(true));
         Random random = new Random();
 
-        Set<String> symbols = new HashSet<String>(); //req.getParameter("q").split(" ");
-        //Collectin
+        Set<String> symbols = Sets.newHashSet(Splitter.on(' ').omitEmptyStrings().split(req.getParameter("q")));
+
         int index = 0;
         if (symbols.isEmpty()) {
             for (StockPrice price : prices) {

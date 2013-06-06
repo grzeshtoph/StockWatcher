@@ -3,11 +3,7 @@
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/war/WEB-INF/lib/gson-2.2.4.jar!/" />
     </CLASSES>
-    <JAVADOC>
-      <root url="jar://$PROJECT_DIR$/../../../lib/google-gson-2.2.4/gson-2.2.4-javadoc.jar!/" />
-    </JAVADOC>
-    <SOURCES>
-      <root url="jar://$PROJECT_DIR$/../../../lib/google-gson-2.2.4/gson-2.2.4-sources.jar!/" />
-    </SOURCES>
+    <JAVADOC />
+    <SOURCES />
   </library>
 </component>

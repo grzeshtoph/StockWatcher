@@ -1,8 +1,5 @@
 package com.google.gwt.sample.stockwatcher.server;
 
-import com.google.common.base.Objects;
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
 import com.google.gwt.sample.stockwatcher.client.model.StockPrice;
 import com.google.gwt.sample.stockwatcher.client.StockPriceService;
@@ -10,6 +7,7 @@ import com.google.gwt.sample.stockwatcher.client.exceptions.ApplicationException
 import com.google.gwt.sample.stockwatcher.client.exceptions.DelistedException;
 import com.google.gwt.sample.stockwatcher.client.exceptions.DuplicatedSymbolException;
 import com.google.gwt.sample.stockwatcher.client.exceptions.NotFoundSymbolException;
+import com.google.gwt.sample.stockwatcher.server.predicates.StockPriceHasSymbol;
 import com.google.gwt.sample.stockwatcher.server.utils.StockPriceUtils;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -42,12 +40,7 @@ public class StockPriceServiceImpl extends RemoteServiceServlet implements Stock
         }
 
         List<StockPrice> prices = StockPriceUtils.getPricesFromStorage(this.getThreadLocalRequest().getSession(true));
-        if (Iterables.any(prices, new Predicate<StockPrice>() {
-            @Override
-            public boolean apply(StockPrice input) {
-                return Objects.equal(input.getSymbol(), symbol);
-            }
-        })) {
+        if (Iterables.any(prices, new StockPriceHasSymbol(symbol))) {
             throw new DuplicatedSymbolException(symbol);
         }
 
@@ -60,14 +53,15 @@ public class StockPriceServiceImpl extends RemoteServiceServlet implements Stock
     @Override
     public StockPrice removeSymbol(String symbol) throws NotFoundSymbolException {
         List<StockPrice> prices = StockPriceUtils.getPricesFromStorage(this.getThreadLocalRequest().getSession(true));
-        StockPrice priceToRemove = new StockPrice(symbol);
-        if (prices.contains(priceToRemove)) {
-            int index = prices.indexOf(priceToRemove);
-            prices.remove(index);
-            priceToRemove.setIndex(index);
-            return priceToRemove;
+
+        if (!Iterables.any(prices, new StockPriceHasSymbol(symbol))) {
+            throw new NotFoundSymbolException(symbol);
         }
 
-        throw new NotFoundSymbolException(symbol);
+        StockPrice priceToRemove = new StockPrice(symbol);
+        int index = prices.indexOf(priceToRemove);
+        prices.remove(index);
+        priceToRemove.setIndex(index);
+        return priceToRemove;
     }
 }

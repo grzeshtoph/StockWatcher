@@ -1,7 +1,7 @@
 <component name="libraryTable">
-  <library name="guava-14.0.1">
+  <library name="gwt-servlet-deps">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/war/WEB-INF/lib/guava-14.0.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/war/WEB-INF/lib/gwt-servlet-deps.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

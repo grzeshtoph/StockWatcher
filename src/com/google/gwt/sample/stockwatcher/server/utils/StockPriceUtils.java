@@ -1,5 +1,6 @@
 package com.google.gwt.sample.stockwatcher.server.utils;
 
+import com.google.common.collect.Lists;
 import com.google.gwt.sample.stockwatcher.client.model.StockPrice;
 
 import javax.servlet.http.HttpSession;
@@ -34,10 +35,12 @@ public final class StockPriceUtils {
 
     public static List<StockPrice> getPricesFromStorage(HttpSession session) {
         List<StockPrice> prices = (List<StockPrice>) session.getAttribute("prices");
+
         if (prices == null) {
-            prices = new ArrayList<StockPrice>();
+            prices = Lists.newArrayList();
             session.setAttribute("prices", prices);
         }
+
         return prices;
     }
 }
