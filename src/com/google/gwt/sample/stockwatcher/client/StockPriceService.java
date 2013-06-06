@@ -1,18 +1,16 @@
 package com.google.gwt.sample.stockwatcher.client;
 
 import com.google.gwt.sample.stockwatcher.client.exceptions.ApplicationException;
-import com.google.gwt.sample.stockwatcher.client.exceptions.DelistedException;
 import com.google.gwt.sample.stockwatcher.client.exceptions.NotFoundSymbolException;
+import com.google.gwt.sample.stockwatcher.client.model.StockPrice;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.google.gwt.core.client.GWT;
 
-import java.util.List;
-
 /**
  * The main interface for the stock price remote service.
  */
-@RemoteServiceRelativePath("StockPriceService")
+@RemoteServiceRelativePath("stockPrices")
 public interface StockPriceService extends RemoteService {
     /**
      * Gets the stocks from storage, updates them with new prices and returns as a list.

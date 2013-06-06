@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="guava-14.0.1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/war/WEB-INF/lib/guava-14.0.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../../../lib/guava-gwt-14.0.1.jar!/com/google/common/io/super" />
+      <root url="jar://$PROJECT_DIR$/../../../lib/guava-gwt-14.0.1.jar!/" />
+    </SOURCES>
+  </library>
+</component>

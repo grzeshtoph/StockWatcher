@@ -25,6 +25,4 @@
     <!-- Specify the paths for translatable code                    -->
     <source path='client'/>
     <source path='shared'/>
-
-    <servlet path="/StockPriceService" class="com.google.gwt.sample.stockwatcher.server.StockPriceServiceImpl"/>
 </module>

@@ -1,8 +1,7 @@
 package com.google.gwt.sample.stockwatcher.client;
 
+import com.google.gwt.sample.stockwatcher.client.model.StockPrice;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-
-import java.util.List;
 
 /**
  * Asynchronous version of interface required by GWT services.

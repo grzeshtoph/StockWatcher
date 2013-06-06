@@ -1,4 +1,4 @@
-package com.google.gwt.sample.stockwatcher.client;
+package com.google.gwt.sample.stockwatcher.client.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -35,8 +35,16 @@ public class StockPrice implements Serializable {
         return this.price;
     }
 
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
     public BigDecimal getChange() {
         return this.change;
+    }
+
+    public void setChange(BigDecimal change) {
+        this.change = change;
     }
 
     public int getIndex() {
@@ -45,14 +53,6 @@ public class StockPrice implements Serializable {
 
     public void setIndex(int index) {
         this.index = index;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
-    public void setChange(BigDecimal change) {
-        this.change = change;
     }
 
     public BigDecimal getChangePercent() {
@@ -64,16 +64,12 @@ public class StockPrice implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null || !(obj instanceof StockPrice)) {
-            return false;
-        }
-        if (this == obj) {
-            return true;
-        }
+        if (obj instanceof StockPrice) {
+            StockPrice that = (StockPrice) obj;
 
-        StockPrice objCasted = (StockPrice) obj;
-
-        return this.symbol != null && this.symbol.equals(objCasted.symbol);
+            return this.symbol != null && this.symbol.equals(that.symbol);
+        }
+        return false;
     }
 
     @Override
@@ -83,6 +79,6 @@ public class StockPrice implements Serializable {
 
     @Override
     public String toString() {
-        return "[" + this.index + ", " + this.symbol + "]";
+        return "{index=" + this.index + ", symbol=" + this.symbol + "}";
     }
 }

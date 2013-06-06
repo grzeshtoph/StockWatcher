@@ -13,7 +13,7 @@
 
     <servlet-mapping>
         <servlet-name>stockPriceServiceImpl</servlet-name>
-        <url-pattern>/stockwatcher/StockPriceService</url-pattern>
+        <url-pattern>/stockwatcher/stockPrices</url-pattern>
     </servlet-mapping>
 
     <!-- Default page to serve -->
