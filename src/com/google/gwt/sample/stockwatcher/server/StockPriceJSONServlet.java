@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 /**
@@ -30,12 +31,13 @@ public class StockPriceJSONServlet extends HttpServlet {
         List<StockPrice> prices = StockPriceUtils.getPricesFromStorage(req.getSession(true));
         Set<String> symbols = ImmutableSet.copyOf(Splitter.on(' ').omitEmptyStrings()
                 .split(Objects.firstNonNull(req.getParameter("q"), "")));
-
+        Random random = new Random();
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
         Iterable<StockPrice> transformedPrices = symbols.isEmpty() ?
-                Iterables.transform(prices, new UpdateStockPrice())
+                Iterables.transform(prices, new UpdateStockPrice(random))
                 : Iterables.transform(Iterables.filter(prices, new StockPriceHasSymbolFromSet(symbols)),
-                new UpdateStockPrice());
+                new UpdateStockPrice(random));
 
         PrintWriter out = resp.getWriter();
         out.println(gson.toJson(ImmutableList.copyOf(transformedPrices)));

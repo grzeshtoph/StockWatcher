@@ -1,5 +1,6 @@
 package com.google.gwt.sample.stockwatcher.server;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.gwt.sample.stockwatcher.client.StockPriceService;
 import com.google.gwt.sample.stockwatcher.client.exceptions.ApplicationException;
@@ -13,6 +14,7 @@ import com.google.gwt.sample.stockwatcher.server.utils.StockPriceUtils;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import java.util.List;
+import java.util.Random;
 
 import static com.google.gwt.sample.stockwatcher.server.constants.Constants.FORBIDDEN_SYMBOLS;
 
@@ -23,7 +25,8 @@ public class StockPriceServiceImpl extends RemoteServiceServlet implements Stock
     @Override
     public StockPrice[] getUpdatedStockPrices() {
         List<StockPrice> prices = StockPriceUtils.getPricesFromStorage(this.getThreadLocalRequest().getSession(true));
-        Iterables.transform(prices, new UpdateStockPrice());
+        Random random = new Random();
+        prices = ImmutableList.copyOf(Iterables.transform(prices, new UpdateStockPrice(random)));
 
         return prices.toArray(new StockPrice[prices.size()]);
     }
@@ -39,7 +42,8 @@ public class StockPriceServiceImpl extends RemoteServiceServlet implements Stock
             throw new DuplicatedSymbolException(symbol);
         }
 
-        StockPrice stockPrice = new UpdateStockPrice(prices.size()).apply(new StockPrice(symbol));
+        Random random = new Random();
+        StockPrice stockPrice = new UpdateStockPrice(random, prices.size()).apply(new StockPrice(symbol));
         prices.add(stockPrice);
 
         return stockPrice;

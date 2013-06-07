@@ -2,6 +2,9 @@
 StockWatcher.iml
 build.properties
 StockWatcher.war
+*.launch
+.classpath
+.project
 gwt-unitcache/
 web/
 war/stockwatcher/

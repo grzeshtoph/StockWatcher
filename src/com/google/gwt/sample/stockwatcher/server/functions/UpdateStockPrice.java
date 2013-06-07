@@ -10,22 +10,27 @@ import java.util.Random;
  * Function that transforms the given instance of {@link StockPrice} with the updated trade values.
  */
 public class UpdateStockPrice implements Function<StockPrice, StockPrice> {
-    private final Random random = new Random();
+    private final Random random;
     private int index = 0;
 
     /**
-     * Optional constructor to create a function with custom index.
+     * Optional constructor to create a function with custom index and external random.
      *
-     * @param index a custom index value
+     * @param random random number generator
+     * @param index  a custom index value
      */
-    public UpdateStockPrice(int index) {
+    public UpdateStockPrice(Random random, int index) {
+        this.random = random;
         this.index = index;
     }
 
     /**
-     * Default constructor.
+     * Default constructor with the external random generator only.
+     *
+     * @param random random number generator
      */
-    public UpdateStockPrice() {
+    public UpdateStockPrice(Random random) {
+        this.random = random;
     }
 
     /**
