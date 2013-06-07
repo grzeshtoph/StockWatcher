@@ -11,9 +11,19 @@
         <servlet-class>com.google.gwt.sample.stockwatcher.server.StockPriceServiceImpl</servlet-class>
     </servlet>
 
+    <servlet>
+        <servlet-name>stockPriceJSONServlet</servlet-name>
+        <servlet-class>com.google.gwt.sample.stockwatcher.server.StockPriceJSONServlet</servlet-class>
+    </servlet>
+
     <servlet-mapping>
         <servlet-name>stockPriceServiceImpl</servlet-name>
         <url-pattern>/stockwatcher/stockPrices</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>stockPriceJSONServlet</servlet-name>
+        <url-pattern>/stockwatcher/stockPricesJSON</url-pattern>
     </servlet-mapping>
 
     <!-- Default page to serve -->

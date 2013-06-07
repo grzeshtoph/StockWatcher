@@ -1,3 +1,11 @@
-.idea
+.idea/
 StockWatcher.iml
 build.properties
+StockWatcher.war
+gwt-unitcache/
+web/
+war/stockwatcher/
+war/WEB-INF/classes/
+war/WEB-INF/deploy/
+war/WEB-INF/lib/
+out/*

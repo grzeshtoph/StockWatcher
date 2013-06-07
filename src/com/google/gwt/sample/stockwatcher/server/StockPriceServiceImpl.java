@@ -1,18 +1,18 @@
 package com.google.gwt.sample.stockwatcher.server;
 
 import com.google.common.collect.Iterables;
-import com.google.gwt.sample.stockwatcher.client.model.StockPrice;
 import com.google.gwt.sample.stockwatcher.client.StockPriceService;
 import com.google.gwt.sample.stockwatcher.client.exceptions.ApplicationException;
 import com.google.gwt.sample.stockwatcher.client.exceptions.DelistedException;
 import com.google.gwt.sample.stockwatcher.client.exceptions.DuplicatedSymbolException;
 import com.google.gwt.sample.stockwatcher.client.exceptions.NotFoundSymbolException;
+import com.google.gwt.sample.stockwatcher.client.model.StockPrice;
+import com.google.gwt.sample.stockwatcher.server.functions.UpdateStockPrice;
 import com.google.gwt.sample.stockwatcher.server.predicates.StockPriceHasSymbol;
 import com.google.gwt.sample.stockwatcher.server.utils.StockPriceUtils;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 import java.util.List;
-import java.util.Random;
 
 import static com.google.gwt.sample.stockwatcher.server.constants.Constants.FORBIDDEN_SYMBOLS;
 
@@ -23,12 +23,7 @@ public class StockPriceServiceImpl extends RemoteServiceServlet implements Stock
     @Override
     public StockPrice[] getUpdatedStockPrices() {
         List<StockPrice> prices = StockPriceUtils.getPricesFromStorage(this.getThreadLocalRequest().getSession(true));
-        Random random = new Random();
-
-        int index = 0;
-        for (StockPrice price : prices) {
-            StockPriceUtils.updateStockPrice(price, index++, random);
-        }
+        Iterables.transform(prices, new UpdateStockPrice());
 
         return prices.toArray(new StockPrice[prices.size()]);
     }
@@ -44,7 +39,7 @@ public class StockPriceServiceImpl extends RemoteServiceServlet implements Stock
             throw new DuplicatedSymbolException(symbol);
         }
 
-        StockPrice stockPrice = StockPriceUtils.updateStockPrice(new StockPrice(symbol), prices.size(), new Random());
+        StockPrice stockPrice = new UpdateStockPrice(prices.size()).apply(new StockPrice(symbol));
         prices.add(stockPrice);
 
         return stockPrice;
