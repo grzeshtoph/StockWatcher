@@ -23,7 +23,7 @@
 
     <servlet-mapping>
         <servlet-name>stockPriceJSONServlet</servlet-name>
-        <url-pattern>/stockwatcher/stockPricesJSON</url-pattern>
+        <url-pattern>/stockPricesJSON</url-pattern>
     </servlet-mapping>
 
     <!-- Default page to serve -->

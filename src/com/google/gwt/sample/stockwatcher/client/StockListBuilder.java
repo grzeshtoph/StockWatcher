@@ -14,7 +14,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 /**
  * UI builder for {@link StockWatcher} class to extract Widgets management from StockWatcher class.
  */
-public class StockWatcherWidgetsBuilder {
+public class StockListBuilder {
     private static final NumberFormat PRICE_FORMAT = NumberFormat.getFormat("#,##0.00");
     private static final NumberFormat PRICE_CHANGE_FORMAT = NumberFormat.getFormat("+#,##0.00;-#,##0.00");
     private final VerticalPanel mainPanel = new VerticalPanel();
@@ -26,21 +26,21 @@ public class StockWatcherWidgetsBuilder {
     private final Label errorMessageLabel = new Label();
     private final Label infoMessageLabel = new Label();
 
-    public StockWatcherWidgetsBuilder setUpErrorMessageLabel() {
+    public StockListBuilder setUpErrorMessageLabel() {
         // Create error message placeholder
         errorMessageLabel.setStyleName("errorMessage");
         errorMessageLabel.setVisible(false);
         return this;
     }
 
-    public StockWatcherWidgetsBuilder setUpInfoMessageLabel() {
+    public StockListBuilder setUpInfoMessageLabel() {
         // Create info message placeholder
         infoMessageLabel.setStyleName("infoMessage");
         infoMessageLabel.setVisible(false);
         return this;
     }
 
-    public StockWatcherWidgetsBuilder setUpStocksFlexTable() {
+    public StockListBuilder setUpStocksFlexTable() {
         // Create table for stock data.
         stocksFlexTable.setText(0, 0, "Symbol");
         stocksFlexTable.setText(0, 1, "Price");
@@ -57,7 +57,7 @@ public class StockWatcherWidgetsBuilder {
         return this;
     }
 
-    public StockWatcherWidgetsBuilder setUpAddPanel() {
+    public StockListBuilder setUpAddPanel() {
         // Assemble Add Stock panel.
         addPanel.add(newSymbolTextBox);
         addPanel.add(addStockButton);
@@ -65,7 +65,7 @@ public class StockWatcherWidgetsBuilder {
         return this;
     }
 
-    public StockWatcherWidgetsBuilder setUpMainPanel() {
+    public StockListBuilder setUpMainPanel() {
         // Assemble Main panel.
         mainPanel.add(infoMessageLabel);
         mainPanel.add(errorMessageLabel);
@@ -75,19 +75,13 @@ public class StockWatcherWidgetsBuilder {
         return this;
     }
 
-    public StockWatcherWidgetsBuilder setUpRootPanel() {
-        // Associate the Main panel with the HTML host page.
-        RootPanel.get("stockList").add(mainPanel);
-        return this;
-    }
-
-    public StockWatcherWidgetsBuilder setUpNewSymbolTextBox() {
+    public StockListBuilder setUpNewSymbolTextBox() {
         // Move cursor focus to the input box.
         newSymbolTextBox.setFocus(true);
         return this;
     }
 
-    public StockWatcherWidgetsBuilder setErrorMessage(String errorMessage) {
+    public StockListBuilder setErrorMessage(String errorMessage) {
         errorMessageLabel.setText(errorMessage);
         errorMessageLabel.setVisible(true);
         infoMessageLabel.setText("");
@@ -95,7 +89,7 @@ public class StockWatcherWidgetsBuilder {
         return this;
     }
 
-    public StockWatcherWidgetsBuilder setInfoMessage(String infoMessage) {
+    public StockListBuilder setInfoMessage(String infoMessage) {
         errorMessageLabel.setText("");
         errorMessageLabel.setVisible(false);
         infoMessageLabel.setText(infoMessage);
@@ -103,12 +97,12 @@ public class StockWatcherWidgetsBuilder {
         return this;
     }
 
-    public StockWatcherWidgetsBuilder setLastUpdatedLabelTest(String text) {
+    public StockListBuilder setLastUpdatedLabelTest(String text) {
         lastUpdatedLabel.setText(text);
         return this;
     }
 
-    public StockWatcherWidgetsBuilder addNewRowToStocksFlexTable(StockPrice stock, ClickHandler removeButtonHandler) {
+    public StockListBuilder addNewRowToStocksFlexTable(StockPrice stock, ClickHandler removeButtonHandler) {
         // Add the stock to the table.
         int row = stock.getIndex() + 1;
         stocksFlexTable.setText(row, 0, stock.getSymbol());
@@ -127,7 +121,7 @@ public class StockWatcherWidgetsBuilder {
         return this;
     }
 
-    public StockWatcherWidgetsBuilder updateRowWithNewStockPrice(StockPrice stock) {
+    public StockListBuilder updateRowWithNewStockPrice(StockPrice stock) {
         int row = stock.getIndex() + 1;
 
         // Format the data in the Price and Change fields.
@@ -151,7 +145,7 @@ public class StockWatcherWidgetsBuilder {
         return this;
     }
 
-    public StockWatcherWidgetsBuilder removeRowFromStocksFlexTable(int index) {
+    public StockListBuilder removeRowFromStocksFlexTable(int index) {
         stocksFlexTable.removeRow(index);
         return this;
     }
@@ -162,5 +156,9 @@ public class StockWatcherWidgetsBuilder {
 
     public TextBox getNewSymbolTextBox() {
         return this.newSymbolTextBox;
+    }
+
+    public VerticalPanel getMainPanel() {
+        return this.mainPanel;
     }
 }
