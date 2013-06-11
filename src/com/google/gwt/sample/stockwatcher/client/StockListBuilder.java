@@ -7,7 +7,6 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
@@ -17,7 +16,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 public class StockListBuilder {
     private static final NumberFormat PRICE_FORMAT = NumberFormat.getFormat("#,##0.00");
     private static final NumberFormat PRICE_CHANGE_FORMAT = NumberFormat.getFormat("+#,##0.00;-#,##0.00");
-    private final VerticalPanel mainPanel = new VerticalPanel();
+    private final VerticalPanel stockListPanel = new VerticalPanel();
     private final FlexTable stocksFlexTable = new FlexTable();
     private final HorizontalPanel addPanel = new HorizontalPanel();
     private final TextBox newSymbolTextBox = new TextBox();
@@ -65,13 +64,13 @@ public class StockListBuilder {
         return this;
     }
 
-    public StockListBuilder setUpMainPanel() {
+    public StockListBuilder setUpStockListPanel() {
         // Assemble Main panel.
-        mainPanel.add(infoMessageLabel);
-        mainPanel.add(errorMessageLabel);
-        mainPanel.add(stocksFlexTable);
-        mainPanel.add(addPanel);
-        mainPanel.add(lastUpdatedLabel);
+        stockListPanel.add(infoMessageLabel);
+        stockListPanel.add(errorMessageLabel);
+        stockListPanel.add(stocksFlexTable);
+        stockListPanel.add(addPanel);
+        stockListPanel.add(lastUpdatedLabel);
         return this;
     }
 
@@ -158,7 +157,7 @@ public class StockListBuilder {
         return this.newSymbolTextBox;
     }
 
-    public VerticalPanel getMainPanel() {
-        return this.mainPanel;
+    public VerticalPanel getStockListPanel() {
+        return this.stockListPanel;
     }
 }
