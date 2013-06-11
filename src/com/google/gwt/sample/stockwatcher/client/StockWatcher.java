@@ -12,7 +12,6 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.RootPanel;
 
 public class StockWatcher implements EntryPoint {
-    private static final int REFRESH_INTERVAL = 5000;
     private final StockListBuilder stockListBuilder = new StockListBuilder();
     private final StockPriceServiceAsync stockPriceService = StockPriceService.App.getInstance();
 

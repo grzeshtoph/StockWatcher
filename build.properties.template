@@ -4,3 +4,4 @@ lib.dir=
 lib.guava=guava-14.0.1.jar
 lib.gson=gson-2.2.4.jar
 lib.junit=junit-4.11.jar
+lib.gxt=gxt-3.0.1-GPL/gxt-3.0.1.jar
