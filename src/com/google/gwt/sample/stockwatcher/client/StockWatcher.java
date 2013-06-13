@@ -1,6 +1,5 @@
 package com.google.gwt.sample.stockwatcher.client;
 
-import com.google.common.base.Strings;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -14,9 +13,13 @@ import com.google.gwt.sample.stockwatcher.client.callbacks.stocklist.StartupStoc
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.widget.core.client.FramedPanel;
+import com.sencha.gxt.widget.core.client.TabPanel;
+import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
 import com.sencha.gxt.widget.core.client.form.FieldLabel;
@@ -26,10 +29,8 @@ import com.sencha.gxt.widget.core.client.info.Info;
 public class StockWatcher implements EntryPoint {
     private final StockListBuilder stockListBuilder = new StockListBuilder();
     private final StockPriceServiceAsync stockPriceService = StockPriceService.App.getInstance();
-    private HorizontalPanel mainPanel;
     private TextField currenciesField = new TextField();
-    private FramedPanel framedPanel = new FramedPanel();
-    private VerticalLayoutContainer verticalLayout = new VerticalLayoutContainer();
+    private TextButton submitButton = new TextButton("Submit");
 
     /**
      * Entry point method.
@@ -39,42 +40,38 @@ public class StockWatcher implements EntryPoint {
     }
 
     private Widget asWidget() {
-        if (mainPanel == null) {
-            mainPanel = new HorizontalPanel();
+        TabPanel tabPanel = new TabPanel();
+        tabPanel.setWidth(450);
+        tabPanel.add(createStockListPanel(), "Stock List");
 
-            RootPanel.get("stockList").add(mainPanel);
+        FramedPanel framedPanel = new FramedPanel();
+        framedPanel.setHeadingText("Stock Currencies Reader");
+        framedPanel.setWidth(350);
+        framedPanel.setBodyStyle("background: none; padding: 5px;");
 
-            setUpStockListPanel();
+        currenciesField.setEmptyText("Type in list of currencies...");
+        currenciesField.setToolTip("Comma separated list of currencies");
+        currenciesField.addValueChangeHandler(new ValueChangeHandler<String>() {
+            @Override
+            public void onValueChange(ValueChangeEvent<String> event) {
+                String value = event.getValue();
+                boolean valueEmpty = value == null || "".equals(value);
+                Info.display("Search For Currencies", valueEmpty ? "Search for all symbols?"
+                        : "Search for symbols: " + value + "?");
+            }
+        });
+        VerticalLayoutContainer verticalLayout = new VerticalLayoutContainer();
+        verticalLayout.add(new FieldLabel(currenciesField, "Currencies"), new VerticalLayoutData(1, -1));
+        framedPanel.add(verticalLayout);
 
-            FlowPanel interimPanel = new FlowPanel();
-            interimPanel.setWidth("100px");
-            mainPanel.add(interimPanel);
+        framedPanel.addButton(submitButton);
 
-            framedPanel.setHeadingText("Stock Currencies Reader");
-            framedPanel.setWidth(350);
-            framedPanel.setBodyStyle("background: none; padding: 5px;");
-            framedPanel.add(verticalLayout);
+        tabPanel.add(framedPanel, "Stock Reader");
 
-            currenciesField.setEmptyText("Type in list of currencies...");
-            currenciesField.setToolTip("Comma separated list of currencies");
-            currenciesField.addValueChangeHandler(new ValueChangeHandler<String>() {
-                @Override
-                public void onValueChange(ValueChangeEvent<String> event) {
-                    String value = event.getValue();
-                    boolean valueEmpty = value == null || "".equals(value);
-                    Info.display("Search For Currencies", valueEmpty ? "Search for all symbols?"
-                            : "Search for symbols: " + value + "?");
-                }
-            });
-            verticalLayout.add(new FieldLabel(currenciesField, "Currencies"), new VerticalLayoutData(1, -1));
-
-            mainPanel.add(framedPanel);
-        }
-
-        return mainPanel;
+        return tabPanel;
     }
 
-    private void setUpStockListPanel() {
+    private Widget createStockListPanel() {
         // set up all UI widgets on the left side of page
         stockListBuilder.setUpErrorMessageLabel()
                 .setUpInfoMessageLabel()
@@ -104,7 +101,7 @@ public class StockWatcher implements EntryPoint {
             }
         });
 
-        mainPanel.add(stockListBuilder.getStockListPanel());
+        return stockListBuilder.getStockListPanel();
     }
 
     private void addStock() {
