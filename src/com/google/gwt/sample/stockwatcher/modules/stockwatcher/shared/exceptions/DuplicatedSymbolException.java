@@ -1,4 +1,4 @@
-package com.google.gwt.sample.stockwatcher.client.exceptions;
+package com.google.gwt.sample.stockwatcher.modules.stockwatcher.shared.exceptions;
 
 /**
  * Exception supporting errors, when attempting to add already listed currency.

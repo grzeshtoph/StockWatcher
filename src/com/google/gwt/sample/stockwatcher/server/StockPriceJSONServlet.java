@@ -7,7 +7,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gwt.sample.stockwatcher.client.model.StockPrice;
+import com.google.gwt.sample.stockwatcher.modules.stockwatcher.shared.model.StockPrice;
 import com.google.gwt.sample.stockwatcher.server.functions.UpdateStockPrice;
 import com.google.gwt.sample.stockwatcher.server.predicates.StockPriceHasSymbolFromSet;
 import com.google.gwt.sample.stockwatcher.server.utils.StockPriceUtils;

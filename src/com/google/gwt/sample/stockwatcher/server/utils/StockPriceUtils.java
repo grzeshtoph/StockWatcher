@@ -1,11 +1,10 @@
 package com.google.gwt.sample.stockwatcher.server.utils;
 
 import com.google.common.collect.Lists;
-import com.google.gwt.sample.stockwatcher.client.model.StockPrice;
+import com.google.gwt.sample.stockwatcher.modules.stockwatcher.shared.model.StockPrice;
 
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 

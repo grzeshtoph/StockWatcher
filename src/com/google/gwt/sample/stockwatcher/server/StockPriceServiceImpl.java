@@ -2,12 +2,12 @@ package com.google.gwt.sample.stockwatcher.server;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
-import com.google.gwt.sample.stockwatcher.client.StockPriceService;
-import com.google.gwt.sample.stockwatcher.client.exceptions.ApplicationException;
-import com.google.gwt.sample.stockwatcher.client.exceptions.DelistedException;
-import com.google.gwt.sample.stockwatcher.client.exceptions.DuplicatedSymbolException;
-import com.google.gwt.sample.stockwatcher.client.exceptions.NotFoundSymbolException;
-import com.google.gwt.sample.stockwatcher.client.model.StockPrice;
+import com.google.gwt.sample.stockwatcher.modules.stockwatcher.shared.StockPriceService;
+import com.google.gwt.sample.stockwatcher.modules.stockwatcher.shared.exceptions.ApplicationException;
+import com.google.gwt.sample.stockwatcher.modules.stockwatcher.shared.exceptions.DelistedException;
+import com.google.gwt.sample.stockwatcher.modules.stockwatcher.shared.exceptions.DuplicatedSymbolException;
+import com.google.gwt.sample.stockwatcher.modules.stockwatcher.shared.exceptions.NotFoundSymbolException;
+import com.google.gwt.sample.stockwatcher.modules.stockwatcher.shared.model.StockPrice;
 import com.google.gwt.sample.stockwatcher.server.functions.UpdateStockPrice;
 import com.google.gwt.sample.stockwatcher.server.predicates.StockPriceHasSymbol;
 import com.google.gwt.sample.stockwatcher.server.utils.StockPriceUtils;

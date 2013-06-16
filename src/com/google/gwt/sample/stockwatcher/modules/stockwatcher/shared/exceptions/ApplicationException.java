@@ -1,4 +1,4 @@
-package com.google.gwt.sample.stockwatcher.client.exceptions;
+package com.google.gwt.sample.stockwatcher.modules.stockwatcher.shared.exceptions;
 
 import java.io.Serializable;
 

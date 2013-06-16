@@ -1,7 +1,7 @@
 package com.google.gwt.sample.stockwatcher.server.predicates;
 
 import com.google.common.base.Predicate;
-import com.google.gwt.sample.stockwatcher.client.model.StockPrice;
+import com.google.gwt.sample.stockwatcher.modules.stockwatcher.shared.model.StockPrice;
 
 import java.util.Set;
 

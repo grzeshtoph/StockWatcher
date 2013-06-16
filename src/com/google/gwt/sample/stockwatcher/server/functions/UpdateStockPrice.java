@@ -1,7 +1,7 @@
 package com.google.gwt.sample.stockwatcher.server.functions;
 
 import com.google.common.base.Function;
-import com.google.gwt.sample.stockwatcher.client.model.StockPrice;
+import com.google.gwt.sample.stockwatcher.modules.stockwatcher.shared.model.StockPrice;
 import com.google.gwt.sample.stockwatcher.server.utils.StockPriceUtils;
 
 import java.util.Random;

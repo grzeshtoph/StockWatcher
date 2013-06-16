@@ -2,7 +2,7 @@ package com.google.gwt.sample.stockwatcher.server.predicates;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Predicate;
-import com.google.gwt.sample.stockwatcher.client.model.StockPrice;
+import com.google.gwt.sample.stockwatcher.modules.stockwatcher.shared.model.StockPrice;
 
 /**
  * Predicate that checks, if an instance of {@link StockPrice} has the give symbol.

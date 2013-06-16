@@ -1,4 +1,4 @@
-package com.google.gwt.sample.stockwatcher.client;
+package com.google.gwt.sample.stockwatcher.modules.stockwatcher.client;
 
 import com.google.gwt.sample.stockwatcher.shared.FieldVerifier;
 import com.google.gwt.core.client.GWT;
