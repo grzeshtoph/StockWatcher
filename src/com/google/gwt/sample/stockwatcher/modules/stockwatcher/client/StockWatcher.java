@@ -28,38 +28,6 @@ public class StockWatcher implements EntryPoint {
     public void onModuleLoad() {
         RootPanel.get("stockList").add(asWidget());
     }
-//
-//    private Widget asWidget() {
-//        TabPanel tabPanel = new TabPanel();
-//        tabPanel.setWidth(450);
-//        tabPanel.add(asWidget(), "Stock List");
-//
-//        FramedPanel framedPanel = new FramedPanel();
-//        framedPanel.setHeadingText("Stock Currencies Reader");
-//        framedPanel.setWidth(350);
-//        framedPanel.setBodyStyle("background: none; padding: 5px;");
-//
-//        currenciesField.setEmptyText("Type in list of currencies...");
-//        currenciesField.setToolTip("Comma separated list of currencies");
-//        currenciesField.addValueChangeHandler(new ValueChangeHandler<String>() {
-//            @Override
-//            public void onValueChange(ValueChangeEvent<String> event) {
-//                String value = event.getValue();
-//                boolean valueEmpty = value == null || "".equals(value);
-//                Info.display("Search For Currencies", valueEmpty ? "Search for all symbols?"
-//                        : "Search for symbols: " + value + "?");
-//            }
-//        });
-//        VerticalLayoutContainer verticalLayout = new VerticalLayoutContainer();
-//        verticalLayout.add(new FieldLabel(currenciesField, "Currencies"), new VerticalLayoutData(1, -1));
-//        framedPanel.add(verticalLayout);
-//
-//        framedPanel.addButton(submitButton);
-//
-//        tabPanel.add(framedPanel, "Stock Reader");
-//
-//        return tabPanel;
-//    }
 
     private Widget asWidget() {
         // set up all UI widgets on the left side of page
