@@ -30,10 +30,8 @@ public class SubmitButtonClickHandler implements ClickHandler {
     @Override
     public void onClick(ClickEvent event) {
         StringBuilder urlBuilder = new StringBuilder(JSON_URL);
-        if (!currenciesTextField.getValue().isEmpty()) {
-            urlBuilder.append("?q=")
-                    .append(currenciesTextField.getValue().replace(' ', '+'));
-        }
+        urlBuilder.append("?q=")
+                .append(currenciesTextField.getValue().replace(' ', '+'));
 
         String url = URL.encode(urlBuilder.toString());
 

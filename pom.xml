@@ -74,7 +74,7 @@
     </dependencies>
 
     <build>
-	    <finalName>StockWatcherApp</finalName>
+        <finalName>StockWatcherApp</finalName>
         <!-- Generate compiled stuff in the folder used for developing mode -->
         <outputDirectory>target/www/WEB-INF/classes</outputDirectory>
 
@@ -172,11 +172,24 @@
                 <version>2.3</version>
                 <configuration>
                     <filesets>
-                        <fileset><directory>src/main/webapp/stockwatcher</directory></fileset>
-						<fileset><directory>src/main/webapp/WEB-INF/classes</directory></fileset>
-						<fileset><directory>tomcat</directory></fileset>
-						<fileset><directory>www-test</directory></fileset>
-						<fileset><directory>.gwt-tmp</directory></fileset>
+                        <fileset>
+                            <directory>src/main/webapp/stockreader</directory>
+                        </fileset>
+                        <fileset>
+                            <directory>src/main/webapp/stockwatcher</directory>
+                        </fileset>
+                        <fileset>
+                            <directory>src/main/webapp/WEB-INF/classes</directory>
+                        </fileset>
+                        <fileset>
+                            <directory>tomcat</directory>
+                        </fileset>
+                        <fileset>
+                            <directory>www-test</directory>
+                        </fileset>
+                        <fileset>
+                            <directory>.gwt-tmp</directory>
+                        </fileset>
                     </filesets>
                 </configuration>
             </plugin>
