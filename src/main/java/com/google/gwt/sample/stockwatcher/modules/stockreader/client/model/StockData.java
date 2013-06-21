@@ -1,6 +1,7 @@
 package com.google.gwt.sample.stockwatcher.modules.stockreader.client.model;
 
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.i18n.client.NumberFormat;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -20,17 +21,16 @@ public class StockData extends JavaScriptObject {
         return this.symbol;
     }-*/;
 
-    public final native BigDecimal getPrice() /*-{
+    public final native double getPrice() /*-{
         return this.price;
     }-*/;
 
-    public final native BigDecimal getChange() /*-{
+    public final native double getChange() /*-{
         return this.change;
     }-*/;
 
     // Non-JSNI method to return change percentage.
-    public final BigDecimal getChangePercent() {
-        return new BigDecimal(getChange().doubleValue() / getPrice().doubleValue() * 100.00)
-                .setScale(2, RoundingMode.HALF_UP);
+    public final String getChangePercent() {
+        return NumberFormat.getFormat("##0.00%").format(getChange() / getPrice());
     }
 }
