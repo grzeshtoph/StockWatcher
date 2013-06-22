@@ -1,7 +1,7 @@
 package com.google.gwt.sample.stockwatcher.modules.stockwatcher.client.callbacks;
 
 import com.google.gwt.i18n.client.DateTimeFormat;
-import com.google.gwt.sample.stockwatcher.modules.stockwatcher.client.StockWatcherWidgetsBuilder;
+import com.google.gwt.sample.stockwatcher.modules.stockwatcher.client.widgets.StockListPanel;
 import com.google.gwt.sample.stockwatcher.modules.stockwatcher.shared.model.StockPrice;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -13,32 +13,32 @@ import java.util.Date;
 public class RefreshStockListAsyncCallback implements AsyncCallback<StockPrice[]> {
     static final DateTimeFormat DATE_TIME_FORMAT = DateTimeFormat.getFormat(
             DateTimeFormat.PredefinedFormat.DATE_TIME_MEDIUM);
-    StockWatcherWidgetsBuilder stockWatcherWidgetsBuilder;
+    StockListPanel stockListPanel;
 
     /**
-     * Creates the callback with the required widgets builder.
+     * Creates the callback with the required panel.
      *
-     * @param stockWatcherWidgetsBuilder required widgets builder
+     * @param stockListPanel required stock list panel
      */
-    public RefreshStockListAsyncCallback(StockWatcherWidgetsBuilder stockWatcherWidgetsBuilder) {
-        this.stockWatcherWidgetsBuilder = stockWatcherWidgetsBuilder;
+    public RefreshStockListAsyncCallback(StockListPanel stockListPanel) {
+        this.stockListPanel = stockListPanel;
     }
 
     @Override
     public void onFailure(Throwable caught) {
-        stockWatcherWidgetsBuilder.setErrorMessage(caught.getMessage());
+        stockListPanel.setErrorMessage(caught.getMessage());
     }
 
     @Override
     public void onSuccess(StockPrice[] result) {
         populateNewStocks(result);
 
-        stockWatcherWidgetsBuilder.setLastUpdatedLabelTest("Last update : " + DATE_TIME_FORMAT.format(new Date()));
+        stockListPanel.setLastUpdatedLabel("Last update : " + DATE_TIME_FORMAT.format(new Date()));
     }
 
     void populateNewStocks(StockPrice[] result) {
         for (StockPrice stock : result) {
-            stockWatcherWidgetsBuilder.updateRowWithNewStockPrice(stock);
+            stockListPanel.updateRowWithNewStockPrice(stock);
         }
     }
 }

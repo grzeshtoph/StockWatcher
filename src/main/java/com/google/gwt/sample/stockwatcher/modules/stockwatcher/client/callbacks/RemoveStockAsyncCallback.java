@@ -1,6 +1,6 @@
 package com.google.gwt.sample.stockwatcher.modules.stockwatcher.client.callbacks;
 
-import com.google.gwt.sample.stockwatcher.modules.stockwatcher.client.StockWatcherWidgetsBuilder;
+import com.google.gwt.sample.stockwatcher.modules.stockwatcher.client.widgets.StockListPanel;
 import com.google.gwt.sample.stockwatcher.modules.stockwatcher.shared.exceptions.NotFoundSymbolException;
 import com.google.gwt.sample.stockwatcher.modules.stockwatcher.shared.model.StockPrice;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -9,15 +9,15 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  * Async callback for removing the existing stock.
  */
 public class RemoveStockAsyncCallback implements AsyncCallback<StockPrice> {
-    private StockWatcherWidgetsBuilder stockWatcherWidgetsBuilder;
+    private StockListPanel stockListPanel;
 
     /**
-     * Creates the callback with the required stock list builder.
+     * Creates the callback with the required stock list panel.
      *
-     * @param stockWatcherWidgetsBuilder the required stock list builder
+     * @param stockListPanel the required stock list panel
      */
-    public RemoveStockAsyncCallback(StockWatcherWidgetsBuilder stockWatcherWidgetsBuilder) {
-        this.stockWatcherWidgetsBuilder = stockWatcherWidgetsBuilder;
+    public RemoveStockAsyncCallback(StockListPanel stockListPanel) {
+        this.stockListPanel = stockListPanel;
     }
 
     @Override
@@ -29,12 +29,12 @@ public class RemoveStockAsyncCallback implements AsyncCallback<StockPrice> {
             errorMessage = caught.getMessage();
         }
 
-        stockWatcherWidgetsBuilder.setErrorMessage(errorMessage);
+        stockListPanel.setErrorMessage(errorMessage);
     }
 
     @Override
     public void onSuccess(StockPrice result) {
-        stockWatcherWidgetsBuilder.removeRowFromStocksFlexTable(result.getIndex() + 1)
-                .setInfoMessage("Currency " + result.getSymbol() + " removed successfully.");
+        stockListPanel.removeRowFromStocksTable(result.getIndex() + 1);
+        stockListPanel.setInfoMessage("Currency " + result.getSymbol() + " removed successfully.");
     }
 }
