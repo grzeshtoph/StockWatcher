@@ -20,6 +20,7 @@ public class StockReaderPanel extends FramedPanel {
         verticalLayout.add(new FieldLabel(currenciesTextField, "Currencies"),
                 new VerticalLayoutContainer.VerticalLayoutData(1, -1));
         this.add(verticalLayout);
+        this.addButton(new RemoteSubmitButton(currenciesTextField));
         this.addButton(new SubmitButton(currenciesTextField));
         return this;
     }

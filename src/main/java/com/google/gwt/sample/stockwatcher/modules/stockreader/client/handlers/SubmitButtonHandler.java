@@ -9,20 +9,21 @@ import com.google.gwt.http.client.URL;
 import com.google.gwt.sample.stockwatcher.modules.stockreader.client.callbacks.JSONRequestCallback;
 import com.google.gwt.sample.stockwatcher.modules.stockreader.client.widgets.CurrenciesTextField;
 import com.sencha.gxt.widget.core.client.box.AlertMessageBox;
+import com.sencha.gxt.widget.core.client.event.SelectEvent;
 
 /**
  * Submit button click handler.
  */
-public class SubmitButtonClickHandler implements ClickHandler {
+public class SubmitButtonHandler implements SelectEvent.SelectHandler {
     private static final String JSON_URL = GWT.getHostPageBaseURL() + "stockPricesJSON";
     private CurrenciesTextField currenciesTextField;
 
-    public SubmitButtonClickHandler(CurrenciesTextField currenciesTextField) {
+    public SubmitButtonHandler(CurrenciesTextField currenciesTextField) {
         this.currenciesTextField = currenciesTextField;
     }
 
     @Override
-    public void onClick(ClickEvent event) {
+    public void onSelect(SelectEvent event) {
         StringBuilder urlBuilder = new StringBuilder(JSON_URL);
         String currenciesTextFieldValue = currenciesTextField.getValue();
         if (currenciesTextFieldValue != null && !currenciesTextFieldValue.isEmpty()) {
