@@ -1,9 +1,8 @@
 package com.google.gwt.sample.stockwatcher.modules.stockreader.client.handlers;
 
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.URL;
-import com.google.gwt.sample.stockwatcher.modules.stockreader.client.callbacks.JSONRequestCallback;
+import com.google.gwt.jsonp.client.JsonpRequestBuilder;
+import com.google.gwt.sample.stockwatcher.modules.stockreader.client.callbacks.JSONPRequestCallback;
 import com.google.gwt.sample.stockwatcher.modules.stockreader.client.widgets.CurrenciesTextField;
 import com.sencha.gxt.widget.core.client.box.AlertMessageBox;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
@@ -26,18 +25,13 @@ public class RemoteSubmitButtonHandler implements SelectEvent.SelectHandler {
         String currenciesTextFieldValue = currenciesTextField.getValue();
         if (currenciesTextFieldValue != null && !currenciesTextFieldValue.isEmpty()) {
             urlBuilder.append(currenciesTextFieldValue);
+            urlBuilder.append("&callback=callback").append(jsonRequestId++);
 
             String url = URL.encode(urlBuilder.toString());
 
             // Send request to server and catch any errors.
-            RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
-
-            try {
-                builder.sendRequest(null, new JSONRequestCallback());
-            } catch (RequestException e) {
-                AlertMessageBox msgBox = new AlertMessageBox("Request Error", e.getMessage());
-                msgBox.show();
-            }
+            JsonpRequestBuilder builder = new JsonpRequestBuilder();
+            builder.requestObject(url, new JSONPRequestCallback());
         } else {
             AlertMessageBox msgBox = new AlertMessageBox("Input Error", "Input currencies are required");
             msgBox.show();
